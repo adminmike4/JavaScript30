@@ -9,13 +9,17 @@
 
     <div class="clock">
       <div class="clock-face">
-        <div class="hand hour-hand"></div>
-        <div class="hand min-hand"></div>
-        <div class="hand second-hand"></div>
+        <div class="hand" id="hour-hand"></div>
+        <div class="hand" id="min-hand"></div>
+        <div class="hand" id="second-hand"></div>
       </div>
     </div>
 
-
+    <div class="info">
+    <button id="myBtn">The time is:</button>
+    <p id="clocktest"> test </p>
+    <p id="digittest"> digit test</p>
+    </div>
   <style>
     html {
       background:#018DED url(http://unsplash.it/1500/1000?image=881&blur=50);
@@ -62,13 +66,94 @@
       background:black;
       position: absolute;
       top:50%;
+      transform-origin: 100%;
+      transform: rotate(90deg);
+      transition: all 0.05s;
+      transition: cubic-bezier(0.175, 2.7, 0.32, 1.275);
+    }
+
+    .info {
+      width: 10rem;
+      height: 10rem;
+      border:20px solid white;
+      border-radius:50%;
+      padding:50px auto;
+      position: fixed;
+      padding:2rem;
+      box-shadow:
+        0 0 0 4px rgba(0,0,0,0.1),
+        inset 0 0 0 3px #EFEFEF,
+        inset 0 0 10px black,
+        0 0 10px rgba(0,0,0,0.2);
     }
 
   </style>
 
-  <script>
+<script>
 
+const hourHand = document.getElementById("hour-hand");
+const minuteHand = document.getElementById("min-hand");
+const secondHand = document.getElementById("second-hand");
 
-  </script>
+var timeTest = document.getElementById("timetest");
+
+var timeAsArray;
+var anglesAsArray;
+var the = "transform:rotate("
+var is = "deg);"
+var tester;
+
+function refreshClock(time) {
+hourHand.style.cssText = the+time[0]+is;
+minuteHand.style.cssText = the+time[1]+is;
+secondHand.style.cssText = the+time[2]+is;
+tester = [the+time[0]+is,the+time[1]+is,the+time[2]+is];
+} // end of refreshClock function
+
+function zeroes(i){
+  if (i < 10) {
+	i = "0"+i;}
+  return i;
+}
+
+//reuse this for minutes and seconds
+function angleSixtieth(inputTime) {
+let angleOutput = (inputTime/60) * 360
+return angleOutput + 90;
+}
+
+function angleTwelth(inputHour,inputMinute) {
+if(inputHour > 12) {
+  inputHour = inputHour - 12}
+let hourOutput = ((inputHour/12)*360) + ((inputMinute/60)*30)
+return hourOutput + 90;
+}
+
+function displayTime() {
+  //  resetDisplay;
+var today = new Date();
+var h = zeroes(today.getHours());
+var m = zeroes(today.getMinutes());
+var s = zeroes(today.getSeconds());
+
+document.getElementById("clocktest").innerHTML = h+":"+m+":"+s;
+setTimeout(displayTime, 1000);
+
+timeAsArray = [h.toString(),m.toString(),s.toString()];
+
+//convert to angles!!!
+var secondsAngle = angleSixtieth(s);
+var minutesAngle = angleSixtieth(m);
+var hoursAngle = angleTwelth(h,m);
+
+anglesAsArray = [hoursAngle, minutesAngle, secondsAngle];
+document.getElementById("digittest").innerHTML = anglesAsArray.map((x)=>x-90);
+
+refreshClock(anglesAsArray);
+}
+
+document.addEventListener(onload, displayTime);
+document.getElementById("myBtn").addEventListener("click", displayTime);
+</script>
 </body>
 </html>
