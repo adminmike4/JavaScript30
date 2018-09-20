@@ -31,28 +31,71 @@
 
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
+  const fifteen = inventors.filter(instance => instance.year < 1600 && instance.year >= 1500);
 
     // Array.prototype.map()
     // 2. Give us an array of the inventors' first and last names
+  const firstLastNames = inventors.map(instance => instance.first + " " + instance.last);
 
     // Array.prototype.sort()
     // 3. Sort the inventors by birthdate, oldest to youngest
+  const sorted = inventors.sort((inventorA, inventorB) => inventorA.year > inventorB.year? 1 : -1);
 
     // Array.prototype.reduce()
     // 4. How many years did all the inventors live?
+    inventors.map( x =>
+  x.yearsLived = x.passed - x.year
+  );
+
+  const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
+  const reduced = inventors.map(x => x.yearsLived).reduce(reducer);
 
     // 5. Sort the inventors by years lived
+  const sortYearsLived = inventors.sort((inventorA, inventorB) => inventorA.yearsLived > inventorB.yearsLived ? 1 : -1);
 
-    // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
+    // 6. create a list of Boulevards in Paris that contain 'de' anywh ere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
+/*
+function httpGetAsync(theUrl, callback)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText);
+    }
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+    xmlHttp.send(null);
+}
 
+const wikiLink = httpGetAsync("https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris", document.querySelector('.mw-category'));
 
+  const category = document.querySelector('.mw-category');
+  const links = [...category.querySelectorAll('a')];
+
+  const de = links.map(link => link.textContent)
+                  .filter(x => x.includes('de'));
+  console.log(de);
+*/
     // 7. sort Exercise
     // Sort the people alphabetically by last name
+  const lastNames = people.map(peoples => peoples.search(/'\w+/gi) == 0 ? peoples : "nothing");
+
+//const sortPeople = people.sort(personA, personB => personA > personB ? 1 : -1);
+
 
     // 8. Reduce Exercise
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+
+const reducedData =  data.reduce(function(obj, item) {
+  if(!obj[item]) {
+ obj[item] = 0;
+ }
+  obj[item]++;
+  return obj;
+},
+{});
 
   </script>
 </body>
