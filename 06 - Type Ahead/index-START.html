@@ -8,14 +8,70 @@
 <body>
 
   <form class="search-form">
-    <input type="text" class="search" placeholder="City or State">
-    <ul class="suggestions">
+    <input id="search-input" data-search="search-term" type="text" class="search" placeholder="City or State">
+    <ul id="results-list" class="suggestions">
       <li>Filter for a city</li>
       <li>or a state</li>
     </ul>
   </form>
 <script>
 const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+const cities = [];
+const searchInput = document.getElementById("search-input");
+var searchValue = searchInput.dataset.search;
+const resultsList = document.getElementById("results-list");
+var totalResults;
+
+fetch(endpoint)
+  .then(blob => blob.json())
+  .then(data => cities.push(...data))
+  console.log("cities data fetched");
+
+function findMatches(wordToMatch, cities) {
+  return cities.filter(place => {
+  const regex = new RegExp(wordToMatch, 'gi')
+  return  place.city.match(regex) || place.state.match(regex)
+  })
+};
+
+function toggleSearchStyle() {
+  searchInput.classList.toggle("inputfocusborder")
+  searchInput.classList.toggle("hidden-placeholder")
+};
+
+function generateList(matchedValues) {
+const html = `<li class = "total">
+    <span class = "name">Total Results Found:</span>
+    <span class = "population">${totalResults}</span>
+  </li>` + matchedValues.map(eachValue =>
+{return `
+  <li>
+    <span class = "name">${eachValue.city}, ${eachValue.state}</span>
+    <span class = "population">${eachValue.population}</span>
+  </li>
+`;
+}).join('');
+resultsList.innerHTML = html;
+};
+
+function defaultList() {
+const html = `
+<li>Filter for a city</li>
+      <li>or a state</li>
+`
+resultsList.innerHTML = html;
+};
+
+function updateSearchValue() {
+  searchValue = searchInput.value
+  const matchedValues = findMatches(searchValue, cities)
+  totalResults = matchedValues.length
+  searchValue.length > 0 ? generateList(matchedValues) : defaultList();
+};
+
+searchInput.addEventListener("focus", toggleSearchStyle);
+searchInput.addEventListener("blur", toggleSearchStyle);
+searchInput.addEventListener("keyup", updateSearchValue);
 
 </script>
   </body>
