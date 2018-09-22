@@ -39,15 +39,23 @@ function toggleSearchStyle() {
   searchInput.classList.toggle("hidden-placeholder")
 };
 
-function generateList(matchedValues) {
+const numberWithCommas = (x) => {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function generateList(matchedValues, searchValue) {
+
+const regex = new RegExp(searchValue, 'gi');
 const html = `<li class = "total">
     <span class = "name">Total Results Found:</span>
     <span class = "population">${totalResults}</span>
-  </li>` + matchedValues.map(eachValue =>
-{return `
+  </li>` + matchedValues.map(eachValue => {
+const cityName = eachValue.city.replace(regex, `<span class="hl">${searchValue}</span>`)
+const stateName = eachValue.state.replace(regex, `<span class="hl">${searchValue}</span>`)
+return `
   <li>
-    <span class = "name">${eachValue.city}, ${eachValue.state}</span>
-    <span class = "population">${eachValue.population}</span>
+    <span class = "name">${cityName}, ${stateName}</span>
+    <span class = "population">${numberWithCommas(eachValue.population)}</span>
   </li>
 `;
 }).join('');
@@ -66,7 +74,7 @@ function updateSearchValue() {
   searchValue = searchInput.value
   const matchedValues = findMatches(searchValue, cities)
   totalResults = matchedValues.length
-  searchValue.length > 0 ? generateList(matchedValues) : defaultList();
+  searchValue.length > 0 ? generateList(matchedValues, searchValue) : defaultList();
 };
 
 searchInput.addEventListener("focus", toggleSearchStyle);
