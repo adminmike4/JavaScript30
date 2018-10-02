@@ -53,12 +53,9 @@
 
 
   </style>
-   <!--
-   The following is a common layout you would see in an email client.
-
-   When a user clicks a checkbox, holds Shift, and then clicks another checkbox a few rows down, all the checkboxes inbetween those two checkboxes should be checked.
-
-  -->
+  <!--
+The following is a common layout you would see in an email client.
+When a user clicks a checkbox, holds Shift, and then clicks another checkbox a few rows down, all the checkboxes inbetween those two checkboxes should be checked.-->
   <div class="inbox">
     <div class="item">
       <input type="checkbox">
@@ -97,8 +94,51 @@
       <p>Don't forget to tweet your result!</p>
     </div>
   </div>
-
 <script>
+
+var pressedStatusFlag;
+var checkedStatusFlag;
+var lastCheckedPosition;
+var checkboxes = document.querySelectorAll("input[type=checkbox]");
+
+function handleCheck(e) {
+  let inBetween = false;
+if (pressedStatusFlag && this.checked) {
+console.log("goodSTART");
+
+checkboxes.forEach(element => {
+  if(element === this || element === lastCheckedPosition) {
+    inBetween = !inBetween;
+  }
+
+if (inBetween) {
+  element.checked = true;
+}
+
+});
+
+}
+lastCheckedPosition = this;
+};
+
+
+window.addEventListener("keydown", function(keypress) {
+  if (keypress.keyCode == 16) {
+  pressedStatusFlag = true;
+  document.querySelector("html").style.background = "#BADA55";
+  }
+  });
+
+window.addEventListener("keyup", function(keypress) {
+  if (keypress.keyCode == 16) {
+  pressedStatusFlag = false;
+  document.querySelector("html").style.background = "#ffc600";
+  }
+});
+
+for (var x = 0; x < checkboxes.length; x++)
+{checkboxes[x].addEventListener("change", handleCheck)};
+
 </script>
 </body>
 </html>

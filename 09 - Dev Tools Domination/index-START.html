@@ -11,8 +11,9 @@
   <script>
     const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }];
 
-    function makeGreen() {
       const p = document.querySelector('p');
+
+    function makeGreen() {
       p.style.color = '#BADA55';
       p.style.fontSize = '50px';
     }
@@ -20,27 +21,58 @@
     // Regular
 
     // Interpolated
-
+console.log("hello I am a %s string")
     // Styled
-
+console.log("%c I am some great text",
+"font-size: red; text-shadow: 5px 5px 0")
     // warning!
-
+    console.warn("Uh oh")
     // Error :|
+    console.error("shit!");
 
     // Info
-
+console.info("coded by maicond morro");
     // Testing
-
+console.assert(1===1, "that is wrong");
     // clearing
-
+console.clear();
     // Viewing DOM Elements
-
+console.dir(p);
     // Grouping together
-
+console.clear();
+dogs.forEach(dog => {
+  console.groupCollapsed(`${dog.name}`)
+  console.log(`this is ${dog.name}`);
+  console.log(`${dog.name} is ${dog.age} years old`);
+  console.log(`${dog.name} is ${dog.age * 7} dog years old`);
+  console.groupEnd(`${dog.name}`);
+}
+);
     // counting
+  console.count('wes');
+  console.count('wes');
+
+  console.count('wes');
+  console.count('wes');
+  console.count('wes');
+  console.count('wes');
+  console.count('Steve');
+  console.count('wes');
+  console.count('wes');
+  console.count('wes');
+  console.count('Steve');
+  console.count('wes');
+  console.count('wes');
+  console.count('wes');
 
     // timing
-
+console.time("fetching data");
+fetch("https://api.github.com/users/adminmike4")
+.then( data => data.json())
+.then( data => {
+  console.timeEnd("fetching data");
+  console.log(data);
+});
   </script>
 </body>
 </html>
