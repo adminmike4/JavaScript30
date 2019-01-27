@@ -81,13 +81,8 @@ function scrub(e) {
 }
 
 function toggleFullscreen() {
-    if (videoPlayer.class("player:fullscreen") == true) {
-    videoPlayer.classList.remove("player:fullscreen");
-    console.log("exit fullscreen");
-    } else {
-videoPlayer.classList.add("player:fullscreen");
+video.requestFullscreen();
     console.log("fullscreen mode launched");
-    };
 };
 
 
